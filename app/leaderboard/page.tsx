@@ -1,9 +1,11 @@
+import { Container } from "@/components/container";
 import { Navbar } from "@/components/navbar";
 
 const LeaderBoard = () => {
     return (
-        <div className="flex">
+        <div className="relative">
             <Navbar/>
+            <Container/>
         </div>
     )
 }
