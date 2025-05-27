@@ -4,6 +4,7 @@ import { v } from "convex/values";
 export default defineSchema({
   students: defineTable({
     name: v.string(),
-    createdAt: v.number(),
+    marks: v.optional(v.array(v.number()),),
   }),
+
 });

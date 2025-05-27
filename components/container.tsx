@@ -1,87 +1,49 @@
 'use client';
-import { Card, CardContent } from "@/components/ui/card";
-import { useQuery } from "convex/react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "./ui/button";
+import { Plus } from "lucide-react";
+import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
 
-export const Container = () => {
-  // Fetch students from Convex database
-  const students = useQuery(api.student.getStudents);
+type Student = {
+  name: string;
+  marks: number[];
+}
 
-  // Handle loading state
-  if (students === undefined) {
-    return (
-      <div className="p-4">
-        <Card className="w-full max-w-full shadow-md rounded-lg">
-          <CardContent className="p-8 text-center">
-            <div className="animate-pulse">Loading students...</div>
-          </CardContent>
-        </Card>
-      </div>
-    );
+export const Container = ({ name, marks }: Student) => {
+  const addZero  = useMutation(api.student.addZero);
+
+  const handleZero = async (name: string) => {
+    try {
+       await addZero({
+       name: name,
+       newMarks: [...marks, 0],})
+      } catch (error) {
+        console.error("Error adding zero:", error);
+        alert("Failed to add zero. Please try again.");
+    }
+     
   }
-
-  // Handle empty state
-  if (!students || students.length === 0) {
-    return (
-      <div className="p-4">
-        <Card className="w-full max-w-full shadow-md rounded-lg">
-          <CardContent className="p-8 text-center">
-            <p className="text-gray-500">No students found. Add some students to get started!</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  const totalMarks = 10
 
   return (
-    <div className="p-4">
-      <Card className="w-full max-w-full overflow-auto shadow-md rounded-lg">
-        <CardContent className="p-0">
-          <div className="w-max h-max overflow-auto">
-            <table className="table-auto border border-gray-300 min-w-max">
-              <thead>
-                <tr>
-                  {students.map((student, index) => (
-                    <th
-                      key={student.id || index}
-                      className="border px-4 py-2 bg-gray-200 text-center whitespace-nowrap"
-                    >
-                      {student.name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {students.map((student, index) => (
-                    <td
-                      key={student.id || index}
-                      className="border px-4 py-2 text-center"
-                    >
-                      {0}
-                    </td>
-                  ))}
-                </tr>
-                <tr>
-                  {students.map((student, index) => (
-                    <td
-                      key={`total-${student.id || index}`}
-                      className={`border px-4 py-3.5 text-center font-semibold ${
-                        index === 0 ? 'bg-blue-100 text-blue-800' : ''
-                      }`}
-                    >
-                      {index === 0 ? 'Total Marks' : ''}
-                      {index === 1 ? totalMarks : ''}
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
+    <div className="flex p-2 h-full">
+      <Card className="h-full bg-gray-300 w-[150px] shadow-md rounded-md p-0">
+        <CardHeader className="border-b flex-col text-xl font-bold border-gray-800 flex items-center">
+          {name}
+          <div className="flex space-x-6 mt-2">
+            <Button onClick={() => handleZero(name)} className="bg-red-500 rounded-lg">0</Button>
+            <Button className="bg-green-500 rounded-lg">
+              <Plus className="h-1 w-1"/>
+            </Button>
           </div>
+        </CardHeader>
+        <CardContent className="bg-white h-full flex flex-col p-0 items-center justify-center">
+          {marks.map((mark, i) => (
+            <div className="flex h-8 w-full border-slate-300 border items-center justify-center" key={i}>{mark}</div>
+          ))}
         </CardContent>
       </Card>
     </div>
+
   );
 };

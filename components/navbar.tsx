@@ -15,7 +15,7 @@ import { api } from "@/convex/_generated/api";
 
 export const Navbar = () => {
   const [name, setName] = useState("");
-  const [open, setOpen] = useState(false); // Add dialog state
+  const [open, setOpen] = useState(false); 
   const addStudent = useMutation(api.student.addStudent);
 
   const handleSubmit = async () => {
@@ -25,7 +25,7 @@ export const Navbar = () => {
     }
     
     try {
-      await addStudent({ name: name.trim() });
+      await addStudent({ name: name.trim(), marks: [] });
       setName("");
       setOpen(false); // Close dialog
       alert("Student added successfully!");
