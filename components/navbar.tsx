@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Plus } from "lucide-react";
+import { Plus, Trash2 } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -15,20 +15,29 @@ import { api } from "@/convex/_generated/api";
 
 export const Navbar = () => {
   const [name, setName] = useState("");
-  const [open, setOpen] = useState(false); 
+  const [open, setOpen] = useState(false);
   const addStudent = useMutation(api.student.addStudent);
+  const clearStudent = useMutation(api.student.clearStudents);
+
+  const handleClear = async () => {
+    try {
+      await clearStudent();
+      alert("All students cleared successfully!");
+    } catch (error) {
+      console.error("Error clearing students:", error);
+    }
+  }
 
   const handleSubmit = async () => {
     if (!name.trim()) {
       alert("Please enter a student name");
       return;
     }
-    
+
     try {
       await addStudent({ name: name.trim(), marks: [] });
       setName("");
-      setOpen(false); // Close dialog
-      alert("Student added successfully!");
+      setOpen(false);
     } catch (error) {
       console.error("Error adding student:", error);
       alert("Failed to add student. Please try again.");
@@ -37,7 +46,7 @@ export const Navbar = () => {
 
   return (
     <div className="h-20 w-full shadow-md">
-      <div className="h-full flex items-center justify-center">
+      <div className="h-full flex items-center justify-center gap-x-3">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
             <Button className="w-[300px] bg-gradient-to-r from-blue-400 via-pink-400 to-purple-400 font-bold text-black">
@@ -73,6 +82,9 @@ export const Navbar = () => {
             </div>
           </DialogContent>
         </Dialog>
+        <Button className="bg-red-500 flex items-center justify-center" onClick={handleClear}>
+          <Trash2 className="h-5 w-5 mr-2" />
+        </Button>
       </div>
     </div>
   );

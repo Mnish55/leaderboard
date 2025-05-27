@@ -48,3 +48,12 @@ export const getStudents = query({
 });
 
 
+export const clearStudents = mutation(async ({ db }) => {
+  const students = await db.query('students').collect();
+
+  for (const student of students) {
+    await db.delete(student._id);
+  }
+});
+
+
