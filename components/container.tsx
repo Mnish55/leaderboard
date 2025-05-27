@@ -23,7 +23,7 @@ export const Container = ({ name, marks }: Student) => {
 
   const increaseManisha = () => {
     if (countManish == totalNumberOfStudents) {
-      setManish()
+      setManish(1)
     } else {
       increaseManish()
     }

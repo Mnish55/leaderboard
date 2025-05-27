@@ -10,7 +10,7 @@ type StoreState = {
 
 type ManishStore = {
   countManish: number;
-  setManish: () => void;
+  setManish: (value: number) => void;
   increaseManish: () => void;
   
 };
@@ -23,6 +23,6 @@ export const useStore = create<StoreState>((set) => ({
 
 export const useManish = create<ManishStore>((set) => ({
   countManish: 0,
-  setManish: () => set({ countManish: 0 }),
+  setManish: (value: number) => set({ countManish: value }),
   increaseManish: () => set((state) => ({ countManish: state.countManish + 1 })),
 }));
