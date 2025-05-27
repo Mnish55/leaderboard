@@ -5,7 +5,7 @@ import { create } from 'zustand';
 type StoreState = {
   count: number;
   increase: () => void;
-  setCount: () => void;
+  setCount: (value: number) => void;
 };
 
 type ManishStore = {
@@ -17,7 +17,7 @@ type ManishStore = {
 
 export const useStore = create<StoreState>((set) => ({
   count: 0,
-  setCount: () => set({ count: 0 }),
+  setCount: (value: number) => set({ count: value }),
   increase: () => set((state) => ({ count: state.count + 1 })),
 }));
 

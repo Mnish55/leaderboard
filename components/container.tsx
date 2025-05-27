@@ -5,6 +5,7 @@ import { Plus } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
 import { useStore, useManish } from "@/providers/zustand";
+import { useEffect } from "react";
 
 type Student = {
   name: string;
@@ -19,7 +20,14 @@ export const Container = ({ name, marks }: Student) => {
   const addZero  = useMutation(api.student.addZero);
   const arr = [...Array(totalNumberOfStudents)].map((_, i) => totalNumberOfStudents - i);
   console.log("ye only counter hai", countManish)
-  console.log("ye marks hai", marks)
+  console.log("ye array ke ander countwala ha", count)
+
+  useEffect(() => {
+  if (countManish === totalNumberOfStudents) {
+    setCount(0);
+  }
+}, [countManish, totalNumberOfStudents, setCount]);
+  
 
   const increaseManisha = () => {
     if (countManish == totalNumberOfStudents) {
@@ -30,11 +38,7 @@ export const Container = ({ name, marks }: Student) => {
   }
 
   const increaseCounter = () => {
-    if (count == totalNumberOfStudents - 1 || countManish == totalNumberOfStudents - 1) {
-      setCount()
-    } else {
-       increase()
-    }
+    increase();
   }
 
 
@@ -58,6 +62,7 @@ export const Container = ({ name, marks }: Student) => {
        newMarks: [...marks, arr[count]],})
        increaseManisha();
        increaseCounter();
+       console.log("array wala count",count)
       } catch (error) {
         console.error("Error adding zero:", error);
         alert("Failed to add zero. Please try again.");
