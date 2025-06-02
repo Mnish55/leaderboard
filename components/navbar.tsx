@@ -15,6 +15,7 @@ import { api } from "@/convex/_generated/api";
 
 export const Navbar = () => {
   const [name, setName] = useState("");
+  const [team, setTeam] = useState("");
   const [open, setOpen] = useState(false);
   const addStudent = useMutation(api.student.addStudent);
   const clearStudent = useMutation(api.student.clearStudents);
@@ -33,10 +34,15 @@ export const Navbar = () => {
       alert("Please enter a student name");
       return;
     }
+    if (!team.trim()) {
+      alert("Please enter  a team number");
+      return;
+    }
 
     try {
-      await addStudent({ name: name.trim(), marks: [] });
+      await addStudent({ name: name.trim(), marks: [] , team: parseInt(team) });
       setName("");
+      setTeam("");
       setOpen(false);
     } catch (error) {
       console.error("Error adding student:", error);
@@ -65,6 +71,18 @@ export const Navbar = () => {
                 placeholder="Student Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
+                className="w-full p-2 border rounded"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSubmit();
+                  }
+                }}
+              />
+              <input
+                type="number"
+                placeholder="Team"
+                value={team}
+                onChange={(e) => setTeam(e.target.value)}
                 className="w-full p-2 border rounded"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {

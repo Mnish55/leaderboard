@@ -4,7 +4,8 @@ import { v } from "convex/values";
 export const addStudent = mutation({
   args: {
     name: v.string(),
-    marks: v.array(v.number())
+    marks: v.array(v.number()),
+    team: v.number(), 
   },
   handler: async (ctx, args) => {
 
@@ -39,11 +40,33 @@ export const addZero = mutation({
   },
 });
 
-export const getStudents = query({
+export const getStudentsTeam1 = query({
   args: {},
   handler: async (ctx) => {
-    const students = await ctx.db.query("students").collect();
-    return students.map(student => ({ id: student._id, name: student.name, marks: student.marks || [] }));
+    const students = await ctx.db.query("students")
+      .filter(q => q.eq(q.field("team"), 1)) // Only team 1
+      .collect();
+
+    return students.map(student => ({
+      id: student._id,
+      name: student.name,
+      marks: student.marks || [],
+    }));
+  },
+});
+
+export const getStudentsTeam2 = query({
+  args: {},
+  handler: async (ctx) => {
+    const students = await ctx.db.query("students")
+      .filter(q => q.eq(q.field("team"), 2)) // Only team 2
+      .collect();
+
+    return students.map(student => ({
+      id: student._id,
+      name: student.name,
+      marks: student.marks || [],
+    }));
   },
 });
 
@@ -54,6 +77,15 @@ export const clearStudents = mutation(async ({ db }) => {
   for (const student of students) {
     await db.delete(student._id);
   }
+});
+
+
+export const getStudents = query({
+  args: {},
+  handler: async (ctx) => {
+    const students = await ctx.db.query("students").collect();
+    return students.map(student => ({ id: student._id, name: student.name, marks: student.marks || [] }));
+  },
 });
 
 

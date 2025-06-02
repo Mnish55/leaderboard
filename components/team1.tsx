@@ -4,7 +4,7 @@ import { Button } from "./ui/button";
 import { Plus } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { api } from "@/convex/_generated/api";
-import { useStore, useManish } from "@/providers/zustand";
+import { useCounterTeam1, useScoreTeam1 } from "@/providers/zustand";
 import { useEffect } from "react";
 
 type Student = {
@@ -12,33 +12,28 @@ type Student = {
   marks: number[];
 }
 
-export const Container = ({ name, marks }: Student) => {
-  const { count, increase, setCount } = useStore();
-  const  {countManish, increaseManish, setManish} = useManish()
-  const totalStudent = useQuery(api.student.getStudents)
+export const Team1 = ({ name, marks }: Student) => {
+  const { counterTeam1, setCounterTeam1, increaseCounterTeam1 } = useCounterTeam1();
+  const { scoreTeam1, setScoreTeam1, increaseScoreTeam1} = useScoreTeam1()
+  const totalStudent = useQuery(api.student.getStudentsTeam1)
   const totalNumberOfStudents = totalStudent?.length || 0;
   const addZero  = useMutation(api.student.addZero);
   const arr = [...Array(totalNumberOfStudents)].map((_, i) => totalNumberOfStudents - i);
-  console.log("ye only counter hai", countManish)
-  console.log("ye array ke ander countwala ha", count)
+
 
   useEffect(() => {
-  if (countManish === totalNumberOfStudents) {
-    setCount(0);
+  if (counterTeam1 === totalNumberOfStudents) {
+    setScoreTeam1(0);
   }
-}, [countManish, totalNumberOfStudents, setCount]);
+}, [counterTeam1, totalNumberOfStudents, setScoreTeam1]);
   
 
-  const increaseManisha = () => {
-    if (countManish == totalNumberOfStudents) {
-      setManish(1)
+  const increaseCounterByOne = () => {
+    if (counterTeam1 == totalNumberOfStudents) {
+      setCounterTeam1(1)
     } else {
-      increaseManish()
+      increaseCounterTeam1();
     }
-  }
-
-  const increaseCounter = () => {
-    increase();
   }
 
 
@@ -47,7 +42,7 @@ export const Container = ({ name, marks }: Student) => {
        await addZero({
        name: name,
        newMarks: [...marks, 0],})
-       increaseManisha();
+       increaseCounterByOne();
       } catch (error) {
         console.error("Error adding zero:", error);
         alert("Failed to add zero. Please try again.");
@@ -59,10 +54,10 @@ export const Container = ({ name, marks }: Student) => {
     try {
        await addZero({
        name: name,
-       newMarks: [...marks, arr[count]],})
-       increaseManisha();
-       increaseCounter();
-       console.log("array wala count",count)
+       newMarks: [...marks, arr[scoreTeam1]],})
+       increaseScoreTeam1();
+       increaseCounterByOne();
+       console.log("array wala count",counterTeam1)
       } catch (error) {
         console.error("Error adding zero:", error);
         alert("Failed to add zero. Please try again.");
