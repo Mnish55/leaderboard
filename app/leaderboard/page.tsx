@@ -2,7 +2,6 @@
 import { Navbar } from "@/components/navbar";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Team1 } from "@/components/team1";
 
 

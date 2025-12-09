@@ -15,7 +15,6 @@ import { api } from "@/convex/_generated/api";
 
 export const Navbar = () => {
   const [name, setName] = useState("");
-  const [team, setTeam] = useState("");
   const [open, setOpen] = useState(false);
   const addStudent = useMutation(api.student.addStudent);
   const clearStudent = useMutation(api.student.clearStudents);
@@ -38,7 +37,6 @@ export const Navbar = () => {
     try {
       await addStudent({ name: name.trim(), marks: [] });
       setName("");
-      setTeam("");
       setOpen(false);
     } catch (error) {
       console.error("Error adding student:", error);
