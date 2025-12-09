@@ -34,13 +34,9 @@ export const Navbar = () => {
       alert("Please enter a student name");
       return;
     }
-    if (!team.trim()) {
-      alert("Please enter  a team number");
-      return;
-    }
 
     try {
-      await addStudent({ name: name.trim(), marks: [] , team: parseInt(team) });
+      await addStudent({ name: name.trim(), marks: [] });
       setName("");
       setTeam("");
       setOpen(false);
@@ -71,18 +67,6 @@ export const Navbar = () => {
                 placeholder="Student Name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full p-2 border rounded"
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSubmit();
-                  }
-                }}
-              />
-              <input
-                type="number"
-                placeholder="Team"
-                value={team}
-                onChange={(e) => setTeam(e.target.value)}
                 className="w-full p-2 border rounded"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter') {
